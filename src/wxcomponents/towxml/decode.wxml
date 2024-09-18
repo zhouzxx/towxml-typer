@@ -1,4 +1,4 @@
-<block wx:for="{{nodes.children}}" wx:for-index="i" wx:for-item="item" wx:key="i">
+<block wx:for="{{nodes.children}}" wx:for-index="i" wx:for-item="item" wx:key="i" id="{{item.id}}">
   <block wx:if="{{item.tag===undefined}}">
     <typable-text text="{{item.text}}" textId="{{item.id}}" />
   </block>

@@ -1,32 +1,41 @@
 Component({
-  options:{
-    styleIsolation:'shared'
+  options: {
+    styleIsolation: "shared",
   },
-  properties:{
-    nodes:{
-      type:Object,
-      value:{}
-    }
+  properties: {
+    nodes: {
+      type: Object,
+      value: {},
+    },
+  },
+  observers: {
+    nodes: function (newVal) {
+      const { curLastLeafNodeId, curNodes } = require("./typer");
+      // 属性值变化时执行的逻辑
+      if (newVal) {
+        curLastLeafNodeId.value = this.getLastLeafNodeId(newVal);
+        curNodes.value = newVal;
+      }
+    },
   },
   lifetimes: {
-    created:function(){
+    created: function () {
       wx.showLoading({
-        title: '加载中',
+        title: "加载中",
       });
-    },
-		ready: function () {
-			console.log("88888888888888888888888888888",this.properties.nodes)
-      wx.hideLoading();
-      setTimeout(()=>{
-        const { traverse,typeShowCbMap } = require('./typer');
-        console.log("typeShowCbMap的值",Object.values(typeShowCbMap).length)
-        traverse(this.properties.nodes.children)
-      },6000)
-		}
-	},
-  data:{
-    someData:{
-      
     }
-  }
-})
+  },
+  data: {
+    someData: {},
+  },
+  methods: {
+    getLastLeafNodeId(nodes) {
+      if (nodes.children.length == 0) {
+        return nodes.id;
+      } else {
+        const lastChild = nodes.children[nodes.children.length - 1];
+        return this.getLastLeafNodeId(lastChild);
+      }
+    },
+  },
+});

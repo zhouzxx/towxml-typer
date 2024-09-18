@@ -177,7 +177,7 @@
     border-width: 1rpx;
     border-style: solid;
     border-radius: 8rpx;
-    font-size: 90%;
+    font-size: 95%;
     overflow-x: auto;
 }
 
@@ -389,6 +389,7 @@ image,video {
 /**代码行号**/
 .h2w__lineNum {
     text-align:right; float:left; padding:0; margin:0 1em 0 0;
+    display:none;
 }
 .h2w__lineNumLine {
     list-style:none;

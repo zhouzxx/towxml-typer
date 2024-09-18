@@ -1,19 +1,18 @@
-export const typeShowCbMap = {}
-export async function traverse(nodes) {
-  // console.log("typeShowCbMap的值",typeShowCbMap)
-  // console.log("77777777777777777777")
+const typeShowCbMap = {}
+const curLastLeafNodeId = {value:undefined}
+const curNodes = {value:undefined}
+const scrollCb = {value:undefined}
+async function traverse(nodes) {
   let index = 0
   for (const node of nodes) {
     await new Promise((resolve) => {
       if (typeShowCbMap[node.id]) {
-        if(node.id.startsWith("0-3-")){
-          console.log("当前的nodei.id",node.id)
-        }
-        // console.log("33333333333333333333")
         typeShowCbMap[node.id](resolve, index)
       }else{
-        // console.log("44444444444444444444")
         resolve()
+      }
+      if(scrollCb.value){
+        scrollCb.value()
       }
     })
     index++
@@ -25,5 +24,8 @@ export async function traverse(nodes) {
 
 module.exports = {
   typeShowCbMap,
-  traverse
+  traverse,
+  curLastLeafNodeId,
+  curNodes,
+  scrollCb
 };
