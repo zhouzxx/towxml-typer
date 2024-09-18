@@ -1,0 +1,20 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index"
+    }
+  ],
+  "globalStyle": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "图鸟官网",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8",
+    // #ifdef MP-WEIXIN
+    "usingComponents": {
+      "towxml": "/wxcomponents/towxml/towxml",
+      "decode": "/wxcomponents/towxml/decode"
+    }
+    // #endif
+  }
+}

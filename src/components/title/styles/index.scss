@@ -1,0 +1,49 @@
+.tn-component-title {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 1;
+
+  .title {
+    position: relative;
+    font-size: 36rpx;
+    font-weight: 600;
+    line-height: 1;
+    z-index: 1;
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: -8rpx;
+      right: -14rpx;
+      width: 76rpx;
+      height: 34rpx;
+      background-color: rgba(1, 190, 255, 0.3);
+      z-index: -1;
+    }
+  }
+
+  .operation {
+    display: flex;
+    align-items: center;
+    .operation-title,
+    .operation-icon {
+      color: var(--tn-color-gray);
+    }
+    .operation-icon {
+      margin-left: 14rpx;
+    }
+  }
+
+  &.sub-title {
+    .title {
+      font-size: 28rpx;
+
+      &::before {
+        display: none;
+      }
+    }
+  }
+}

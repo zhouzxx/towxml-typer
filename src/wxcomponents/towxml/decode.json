@@ -1,0 +1,11 @@
+{
+  "component": true,
+  "usingComponents": {
+    "decode": "./decode",
+    "audio-player": "./audio-player/audio-player",
+    "table": "./table/table",
+    "todogroup": "./todogroup/todogroup",
+    "img": "./img/img",
+    "typable-text": "./typable-text/typable-text"
+  }
+}
