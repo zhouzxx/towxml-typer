@@ -53,6 +53,8 @@ const parse2 = require('./parse2/index'),
         // 为每一个节点设置id
         // 给根节点设置id为0
         result.id = "0";
+        result.noType = false
+        const noTypeComponents = config.noType;
         (eachFn = (arr,obj,_e,isRichTextContent) => {
             obj.children = obj.children || [];
             _e.child = _e.child || [];
@@ -97,7 +99,7 @@ const parse2 = require('./parse2/index'),
                         };
                     };
                 };
-
+                o.noType = obj.noType ? true : noTypeComponents.indexOf(o.tag) > -1 ? true : false
                 o.rely = relyList.indexOf(e.tag) > -1;      // 判断是否不能嵌套其它标签
                 
                 if(item.children){

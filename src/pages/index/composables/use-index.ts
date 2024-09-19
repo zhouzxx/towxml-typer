@@ -55,7 +55,6 @@ export const useIndex = () => {
     return items.value.find((item) => item.index === index)
   }
   const tabbarChangeHandle = (index: string | number) => {
-	console.log("renderPageStatus.value的值",renderPageStatus.value)
     if (typeof index === 'string') {
       index = Number.parseInt(index)
     }

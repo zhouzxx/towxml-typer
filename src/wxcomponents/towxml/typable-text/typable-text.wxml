@@ -1,1 +1,1 @@
-<text selectable="true" style="display: {{isShow?'':'none'}};">{{currentText}}</text>
+<text selectable="true" style="display: {{(openTyper && !noType) ?(isShow ? '':'none'):''}};">{{(noType || !openTyper)? text:currentText}}</text>

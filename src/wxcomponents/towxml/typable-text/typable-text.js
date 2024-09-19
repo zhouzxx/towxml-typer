@@ -1,3 +1,5 @@
+const { noType } = require("../config");
+
 Component({
   options: {
     styleIsolation: "shared",
@@ -11,32 +13,54 @@ Component({
       type: String,
       value: "",
     },
-  },
-  lifetimes: {
-    ready: function () {
-      const { typeShowCbMap, curLastLeafNodeId,curNodes } = require("../typer");
-      // console.log("77777777777777777777777777777777777")
-      // console.log("this.properties.textId的值",this.properties.textId)
-      typeShowCbMap[this.properties.textId] = (resolve) => {
-        // console.log("执行文本组件中的cb")
-        this.show();
-        this.startTyping(resolve);
-      };
-      if (this.properties.textId == curLastLeafNodeId.value) {
-        wx.hideLoading();
-        console.log("打字文本中匹配到最后一个，开始遍历")
-        traverse(curNodes.value.children);
-      }
+    openTyper: {
+      type: Boolean,
+      value: false
     },
+    speed: {
+      type: Number,
+      value: 15,
+    },
+    noType: {
+      type: Boolean,
+      value: true
+    }
+  },
+  observers: {
+    textId: function (newVal) {
+      // 属性值变化时执行的逻辑
+      const { typeShowCbMap, curLastLeafNodeId, curNodes, openTyper, lastScrollTime, scrollCb, scrollTimer, traverse } = require("../typer");
+      if (newVal && openTyper.value) {
+        typeShowCbMap.value[newVal] = (resolve) => {
+          this.show();
+          this.startTyping(resolve);
+        };
+        if (newVal == curLastLeafNodeId.value) {
+          console.log("打字文本中匹配到最后一个，开始遍历")
+          console.log("开始遍历前typeShowCbMap的值", typeShowCbMap.value)
+          // setTimeout(() => {
+            wx.hideLoading();
+            traverse(curNodes.value.children);
+            //默认情况下时typable-text组件中的文本打印完了之后，自动触发滚动，但是有时候，组件内的文本很多，可能要打印几秒甚至更久，这个时候就添加这个定时器，即距离上一次滚动超过一定时间了也触发滚动
+            scrollTimer.value = setInterval(() => {
+              if (Date.now() - lastScrollTime.value > 600) {
+                console.log("定时器驱动滚动了一下")
+                scrollCb.value()
+              }
+            }, 300)
+          // }, 0)
+        }
+      }
+    }
   },
   data: {
     currentText: "",
     timer: null,
-    isShow: false,
-    speed: 20,
+    isShow: false
   },
   methods: {
     show() {
+      // console.log("遍历text》》》》》》")
       this.data.isShow = true;
       this.setData({ isShow: this.data.isShow });
     },
@@ -54,7 +78,7 @@ Component({
           this.clearTimer();
           resolve();
         }
-      }, this.data.speed);
+      }, this.properties.speed);
     },
     clearTimer() {
       if (this.data.timer) {
