@@ -11,7 +11,7 @@ Component({
     },
     openTyper: {
       type: Boolean,
-      value: false
+      value: false,
     },
     speed: {
       type: Number,
@@ -25,45 +25,26 @@ Component({
         const {
           typeShowCbMap,
           curLastLeafNodeId,
-          traverse,
-          curNodes,
-          scrollCb, 
-          scrollTimer,
-          lastScrollTime
         } = require("./typer");
-        if (
-          newVal.children &&
-          newVal.children.length > 0
-        ) {
+        if (newVal.children && newVal.children.length > 0) {
           let c = 0;
           for (let node of newVal.children) {
-            if(newVal.noType == false){
+            if (newVal.noType == false) {
               typeShowCbMap.value[node.id] = (resolve, index) => {
                 this.show(resolve, index);
               };
               this.data.isShow[c] = false;
               c++;
-            }else{
+            } else {
               this.data.isShow[c] = true;
-              c++
+              c++;
             }
             if (node.id == curLastLeafNodeId.value) {
-              console.log("decode中匹配到最后一个，开始遍历")
-              console.log("开始遍历前typeShowCbMap的值", typeShowCbMap.value)
-              setTimeout(() => {
-                wx.hideLoading();
-                traverse(curNodes.value.children);
-                scrollTimer.value = setInterval(() => {
-                  if (Date.now() - lastScrollTime.value > 600) {
-                    console.log("定时器驱动滚动了一下")
-                    scrollCb.value()
-                  }
-                }, 300)
-              }, 0)
+              this.data.hasLastLeafNode = true;
             }
           }
-          if(newVal.noType == true){
-            this.setData({isShow:this.data.isShow})
+          if (newVal.noType == true) {
+            this.setData({ isShow: this.data.isShow });
           }
         }
       }
@@ -80,9 +61,34 @@ Component({
         };
       });
     },
+    ready: function () {
+      if (this.data.hasLastLeafNode) {
+        const {
+          typeShowCbMap,
+          traverse,
+          curNodes,
+          scrollCb,
+          scrollTimer,
+          lastScrollTime,
+        } = require("./typer");
+        console.log("decode中匹配到最后一个，开始遍历");
+        console.log("开始遍历前typeShowCbMap的值", typeShowCbMap.value);
+        setTimeout(() => {
+          wx.hideLoading();
+          traverse(curNodes.value.children);
+          scrollTimer.value = setInterval(() => {
+            if (Date.now() - lastScrollTime.value > 600) {
+              console.log("定时器驱动滚动了一下");
+              scrollCb.value();
+            }
+          }, 300);
+        }, 0);
+      }
+    },
   },
   data: {
     isShow: {},
+    hasLastLeafNode: false,
     // openTyper: false
   },
   methods: {
