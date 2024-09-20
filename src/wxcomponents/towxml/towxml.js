@@ -19,7 +19,7 @@ Component({
   observers: {
     nodes: function (newVal) {
       if (this.properties.openTyper) {
-        const { curLastLeafNodeId, curNodes, reset } = require("./typer");
+        const { curLastLeafNodeId, curNodes, reset, openTyper } = require("./typer");
         reset()
         // 属性值变化时执行的逻辑
         if (newVal && newVal.id) {
@@ -35,18 +35,24 @@ Component({
         }
       }
     },
+    openTyper: function (newVal) {
+      const { openTyper } = require("./typer");
+      openTyper.value = newVal
+      wx.showLoading({
+        title: "加载中",
+      });
+    }
   },
   lifetimes: {
     attached: function () {
       const { openTyper } = require("./typer");
-      openTyper.value = this.properties.openTyper
-      console.log("this.properties.openTyper的值",this.properties.openTyper)
-      console.log("11111111111111111111")
+      openTyper.value = this.data.openTyper
       wx.showLoading({
         title: "加载中",
       });
     },
     ready: function () {
+      console.log("towxml中的ready,看看在之前还是在之后")
       if (!this.properties.openTyper) {
         wx.hideLoading();
       }

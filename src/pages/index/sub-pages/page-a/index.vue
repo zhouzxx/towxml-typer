@@ -2,6 +2,7 @@
   <view class="page">
     <scroll-view class="page-scroll" scroll-y :scrollTop="scrollTop" :scroll-with-animation="true">
       <view class="scroll-container">
+        <!-- <towxml v-if="showMd" :nodes="md" :openTyper="true" :speed="20"/> -->
         <towxml :nodes="md" :openTyper="true" :speed="20"/>
       </view>
     </scroll-view>
@@ -18,6 +19,7 @@ export default {
     const md = ref();
     const scrollTop = ref(0);
     const instance = getCurrentInstance();
+    const showMd = ref(false)
     uni.request({
       // url: `https://zxx-wwj-oss.oss-cn-shenzhen.aliyuncs.com/schChoose/article/4d711758-074e-4be8-b280-77cc51719248/08c54e75-144f-426a-ba38-eb91cf464846.md`,
       url: `https://zxx-wwj-oss.oss-cn-shenzhen.aliyuncs.com/schChoose/article/d338e6c9-dc59-45d1-8482-5ea21d05f449/923e9f20-46da-4026-844b-f6a2c14ec0eb.md`,
@@ -25,6 +27,7 @@ export default {
       encoding: "utf8",
       success: (res) => {
         md.value = towxml(res.data, "markdown");
+        showMd.value = true
         console.log("md.value的值", md.value);
       },
       fail: (e) => {
@@ -80,6 +83,7 @@ export default {
     return {
       md,
       scrollTop,
+      showMd
     };
   },
 };
