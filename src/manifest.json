@@ -1,13 +1,13 @@
 {
-    "name" : "图鸟官网",
+    "name" : "towxml-typer",
     "appid" : "",
-    "description" : "图鸟官网",
+    "description" : "towxml-typer",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true,
-        "nvueStyleCompiler" : "图鸟官网",
+        "nvueStyleCompiler" : "towxml-typer",
         "compilerVersion" : 3,
         "splashscreen" : {
             "alwaysShowBeforeRender" : true,

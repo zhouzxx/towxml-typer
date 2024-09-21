@@ -7,7 +7,7 @@
   "globalStyle": {
     "navigationStyle": "custom",
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "图鸟官网",
+    "navigationBarTitleText": "towxml-typer",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8",
     // #ifdef MP-WEIXIN

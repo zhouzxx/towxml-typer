@@ -8,7 +8,7 @@
 
   .page-scroll {
     position: relative;
-    width: 100%;
+    width: calc(100vw - 40rpx);
     height: calc(100vh - 350rpx);
     background-color: #ffffff;
     border-radius: 20rpx;
