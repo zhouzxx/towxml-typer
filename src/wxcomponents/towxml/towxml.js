@@ -19,53 +19,64 @@ Component({
   observers: {
     nodes: function (newVal) {
       if (this.properties.openTyper) {
-        const { curLastLeafNodeId, curNodes, reset, openTyper } = require("./typer");
-        reset()
+        const {
+          curLastLeafNodeId,
+          curNodes,
+          reset,
+          renderStartTime,
+        } = require("./typer");
         // 属性值变化时执行的逻辑
         if (newVal && newVal.id) {
-          // if (this.data.oldNodes) {
-          //   this.data.contentChanged = !this.data.contentChanged
-          //   this.setData(
-          //     { contentChanged: this.data.contentChanged }
-          //   )
-          // }
+          reset();
+          console.log("towxml中newVal.id的值", newVal.id, newVal);
           curLastLeafNodeId.value = this.getLastLeafNodeId(newVal);
-          console.log("curLastLeafNodeId.value的值", curLastLeafNodeId.value)
+          console.log("curLastLeafNodeId.value的值", curLastLeafNodeId.value);
           curNodes.value = newVal;
+          this.data.changeDecode = !this.data.changeDecode;
+          this.setData({ changeDecode: this.data.changeDecode });
+          renderStartTime.value = Date.now();
         }
       }
     },
     openTyper: function (newVal) {
       const { openTyper } = require("./typer");
-      openTyper.value = newVal
-      wx.showLoading({
-        title: "加载中",
-      });
-    }
+      openTyper.value = newVal;
+      if (newVal) {
+        wx.showLoading({
+          title: "加载中",
+        });
+      }
+    },
   },
   lifetimes: {
     attached: function () {
       const { openTyper } = require("./typer");
-      openTyper.value = this.data.openTyper
+      openTyper.value = this.data.openTyper;
+      const { renderStartTime } = require("./typer");
+      renderStartTime.value = Date.now();
       wx.showLoading({
         title: "加载中",
       });
     },
     ready: function () {
-      console.log("towxml中的ready,看看在之前还是在之后")
-      if (!this.properties.openTyper) {
-        wx.hideLoading();
-      }
+      console.log(
+        "towxml中的ready,看看在之前还是在之后",
+        this.properties.openTyper
+      );
+      // if (!this.properties.openTyper) {
+      //   wx.hideLoading();
+      // }
     },
     detached: function () {
       const { reset } = require("./typer");
-      reset()
-    }
+      reset();
+    },
   },
   data: {
     someData: {},
     oldNodes: undefined,
-    contentChanged: false
+    contentChanged: false,
+    changeDecode: false,
   },
   methods: {
     getLastLeafNodeId(nodes) {

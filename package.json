@@ -1,5 +1,5 @@
 {
-    "name": "🎏 图鸟模板-vue3",
+    "name": "towxml-typer",
     "version": "1.1.0",
     "scripts": {
         "dev:app": "uni -p app",
@@ -78,19 +78,18 @@
         "vite": "4.0.3",
         "vue-tsc": "^1.0.24"
     },
-    "id": "tuniao-site-vue3",
-    "displayName": "🎏 图鸟模板-vue3",
-    "description": "企业官网，是基于 图鸟VUE3 进行开发的纯前端模板，支持微信小程序、支付宝小程序、APP和H5。",
+    "id": "towxml-typer",
+    "displayName": "markdown AI 打字机",
+    "description": "基于towxml,在微信小程序上实现markdown文档的ai打字机效果",
     "keywords": [
-        "vue3",
-        "图鸟UI",
-        "typescript",
-        "酷炫前端页面模板"
+        "ai打字机",
+        "towxml",
+        "markdown"
     ],
     "dcloudext": {
         "category": [
-            "uni-app前端模板",
-            "前端页面模板"
+            "towxml-typer",
+            "ai打字机"
         ]
     }
 }

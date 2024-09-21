@@ -1,51 +1,111 @@
-<script setup lang="ts">
-	import { nextTick } from 'vue'
-	import { onLoad } from '@dcloudio/uni-app'
-	import TnTabbar from '@tuniao/tnui-vue3-uniapp/components/tabbar/src/tabbar.vue'
-	import TnTabbarItem from '@tuniao/tnui-vue3-uniapp/components/tabbar/src/tabbar-item.vue'
-
-	/* 引入子页面 */
-	import PageA from './sub-pages/page-a/index.vue'
-
-	import { useIndex, useIndexCustomStyle } from './composables'
-
-	const {
-		tabbarData,
-		currentTabbarIndex,
-		renderPageStatus,
-		tabbarChangeHandle,
-	} = useIndex()
-	const { pageContainerStyle } = useIndexCustomStyle(currentTabbarIndex)
-
-	onLoad((options : any) => {
-		// 当前进入子页面的索引值
-		const index = Number(options?.index || 0)
-		tabbarChangeHandle(index)
-		// 设置默认被渲染的页面
-		renderPageStatus.value[index] = true
-		nextTick(() => {
-			// 设置当前子页面的索引值
-			currentTabbarIndex.value = index
-		})
-	})
-</script>
-
 <template>
-	<view class="page">
-		<!-- 首页子页面 -->
-		<view v-if="renderPageStatus[0]" class="page__container" :style="pageContainerStyle(0)">
-			<PageA />
-		</view>
-	</view>
-
-	<!-- 底部导航栏 -->
-	<TnTabbar v-model="currentTabbarIndex" fixed switch-animation :placeholder="false" font-size="20"
-		@change="tabbarChangeHandle">
-		<TnTabbarItem v-for="(item, index) in tabbarData" :key="index" :text="item.text" :icon="item.icon"
-			:active-icon="item.activeIcon" :bulge="index === 2" :icon-size="index === 2 ? '56' : ''" :font-size="24" />
-	</TnTabbar>
+  <view class="page">
+    <scroll-view class="page-scroll" scroll-y :scrollTop="scrollTop" :scroll-with-animation="true">
+      <view class="scroll-container">
+        <!-- <towxml v-if="showMd" :nodes="md" :openTyper="true" :speed="20"/> -->
+        <towxml :nodes="md" :openTyper="true" :speed="15"/>
+      </view>
+    </scroll-view>
+  </view>
 </template>
 
+<script>
+import { onMounted, ref, getCurrentInstance, nextTick } from "vue";
+const towxml = require("/../../wxcomponents/towxml/index");
+const { scrollCb,lastScrollTime } = require("/../../wxcomponents/towxml/typer");
+
+export default {
+  setup() {
+    const md = ref();
+    const scrollTop = ref(0);
+    const instance = getCurrentInstance();
+    const showMd = ref(false)
+    uni.request({
+      // url: `https://zxx-wwj-oss.oss-cn-shenzhen.aliyuncs.com/schChoose/article/4d711758-074e-4be8-b280-77cc51719248/08c54e75-144f-426a-ba38-eb91cf464846.md`,
+      // url: `https://zxx-wwj-oss.oss-cn-shenzhen.aliyuncs.com/schChoose/article/d338e6c9-dc59-45d1-8482-5ea21d05f449/923e9f20-46da-4026-844b-f6a2c14ec0eb.md`,
+      url: `https://zxx-wwj-oss.oss-cn-shenzhen.aliyuncs.com/schChoose/article/b3d8917d-ccfc-4267-973b-158469d5bda1/dd4bd451-9c6a-4651-801f-06cb71142172.md`,
+      // url: `https://zxx-wwj-oss.oss-cn-shenzhen.aliyuncs.com/111.md`,
+      encoding: "utf8",
+      success: (res) => {
+        md.value = towxml(res.data, "markdown");
+        showMd.value = true
+        console.log("md.value的值", md.value);
+      },
+      fail: (e) => {
+        md.value = towxml("请求发送失败", "markdown");
+        console.log("读取文件失败", e);
+      },
+    });
+
+    // setTimeout(() => {
+    //   uni.request({
+    //     // url: `https://zxx-wwj-oss.oss-cn-shenzhen.aliyuncs.com/schChoose/article/4d711758-074e-4be8-b280-77cc51719248/08c54e75-144f-426a-ba38-eb91cf464846.md`,
+    //     url: `https://zxx-wwj-oss.oss-cn-shenzhen.aliyuncs.com/schChoose/article/d338e6c9-dc59-45d1-8482-5ea21d05f449/923e9f20-46da-4026-844b-f6a2c14ec0eb.md`,
+    //     encoding: "utf8",
+    //     success: (res) => {
+    //       md.value = towxml(res.data, "markdown");
+    //       console.log("新的md.value的值", md.value);
+    //     },
+    //     fail: (e) => {
+    //       md.value = towxml("请求发送失败", "markdown");
+    //       console.log("读取文件失败", e);
+    //     },
+    //   });
+    // }, 10000);
+
+    // setTimeout(() => {
+    //   uni.request({
+    //     url: `https://zxx-wwj-oss.oss-cn-shenzhen.aliyuncs.com/schChoose/article/4d711758-074e-4be8-b280-77cc51719248/08c54e75-144f-426a-ba38-eb91cf464846.md`,
+    //     // url: `https://zxx-wwj-oss.oss-cn-shenzhen.aliyuncs.com/schChoose/article/d338e6c9-dc59-45d1-8482-5ea21d05f449/923e9f20-46da-4026-844b-f6a2c14ec0eb.md`,
+    //     encoding: "utf8",
+    //     success: (res) => {
+    //       md.value = towxml(res.data, "markdown");
+    //       console.log("新的md.value的值", md.value);
+    //     },
+    //     fail: (e) => {
+    //       md.value = towxml("请求发送失败", "markdown");
+    //       console.log("读取文件失败", e);
+    //     },
+    //   });
+    // }, 20000);
+
+    onMounted(() => {
+      scrollCb.value = () => {
+        nextTick(() => {
+          uni
+            .createSelectorQuery()
+            .in(instance)
+            .select(".page-scroll")
+            .boundingClientRect((res) => {
+              const scrollHeight = res.height;
+              uni
+                .createSelectorQuery()
+                .in(instance)
+                .select(".scroll-container")
+                .boundingClientRect((res1) => {
+                  const scrollContainerHeight = res1.height;
+                  const top = scrollContainerHeight - scrollHeight;
+                  if (top > 0) {
+                    scrollTop.value = top;
+                    lastScrollTime.value = Date.now()
+                  }
+                })
+                .exec();
+            })
+            .exec();
+        });
+      };
+    });
+
+    return {
+      md,
+      scrollTop,
+      showMd
+    };
+  },
+};
+</script>
+
 <style lang="scss" scoped>
-	@import './styles/index.scss';
+@import "./index.scss";
 </style>

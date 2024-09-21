@@ -1,0 +1,24 @@
+.page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  padding: 250rpx 20rpx 100rpx 20rpx;
+  background-color: #363c4d;
+
+
+  .page-scroll {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 350rpx);
+    background-color: #ffffff;
+    border-radius: 20rpx;
+
+
+    .scroll-container {
+      padding-top: 0rpx;
+      padding-left: 30rpx;
+      padding-right: 30rpx;
+      padding-bottom: 150rpx;
+    }
+  }
+}

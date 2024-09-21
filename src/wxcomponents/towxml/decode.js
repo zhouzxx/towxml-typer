@@ -20,9 +20,9 @@ Component({
   },
   observers: {
     nodes: function (newVal) {
-      if(newVal && newVal.id != undefined && this.data.hasInitCb == false){
-        this.data.hasInitCb = true
-        this.initCb()
+      if (newVal && newVal.id != undefined && this.data.hasInitCb == false) {
+        this.data.hasInitCb = true;
+        this.initCb();
       }
     },
   },
@@ -36,28 +36,29 @@ Component({
           }
         };
       });
-      if(this.data.nodes.id != undefined && this.data.hasInitCb == false){
-        this.data.hasInitCb = true
-        this.initCb()
+      if (this.data.nodes.id != undefined && this.data.hasInitCb == false) {
+        this.data.hasInitCb = true;
+        this.initCb();
+      }
+      if (this.data.nodes.id == "0" && !this.data.nodes.openTyper) {
+        wx.hideLoading();
       }
     },
   },
   data: {
     isShow: {},
     hasLastLeafNode: false,
-    hasInitCb: false
+    hasInitCb: false,
     // openTyper: false
   },
   methods: {
     initCb() {
       const { openTyper } = require("./typer");
-      const newVal = this.data.nodes
+      const newVal = this.data.nodes;
       if (newVal && newVal.id && openTyper.value) {
-        const {
-          typeShowCbMap,
-        } = require("./typer");
-        if(newVal.id.length <= 1){
-          console.log("decode中newVal.id",newVal.id)
+        const { typeShowCbMap } = require("./typer");
+        if (newVal.id.length <= 1) {
+          console.log("decode中newVal.id", newVal.id);
         }
         if (newVal.children && newVal.children.length > 0) {
           let c = 0;
