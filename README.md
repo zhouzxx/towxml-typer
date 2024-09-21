@@ -10,6 +10,8 @@
 
 运行项目：
 
+`使用vsode打开项目`
+
 `pnpm install`
 
 `pnpm run dev:mp-weixin`
