@@ -3,7 +3,7 @@
     <scroll-view class="page-scroll" scroll-y :scrollTop="scrollTop" :scroll-with-animation="true">
       <view class="scroll-container">
         <!-- <towxml v-if="showMd" :nodes="md" :openTyper="true" :speed="20"/> -->
-        <towxml :nodes="md" :openTyper="false" :speed="15"/>
+        <towxml :nodes="md" :openTyper="true" :speed="15"/>
       </view>
     </scroll-view>
   </view>
