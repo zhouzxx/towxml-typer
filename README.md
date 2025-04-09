@@ -1,3 +1,5 @@
+这个版本只适合你已经有全部markdown文本的情况，如果是ai流式数据接口，访问[流式接口版本](https://github.com/zhouzxx/towxml-stream-typer)
+
 ![输入图片说明](towxm_typer.gif)
 
 > 目前市面上的ai对话像chatgpt、kimi、文心一言等，都是通过逐行逐字这样一种打字机效果将答案呈现给用户，但是我找了很久，没有找到开源好用、性能稳定、可用于微信小程序的markdown文档打字机组件。
